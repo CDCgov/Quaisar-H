@@ -30,6 +30,7 @@ if (params.kraken2db == null) { exit 1, 'Input path to kraken2db not specified!'
 */
 
 include { PHOENIX_EXTERNAL       } from './workflows/phoenix'
+include { PHOENIX_QC_EXTERNAL    } from './workflows/phoenix_qc'
 include { PHOENIX_EXQC           } from './workflows/cdc_phoenix'
 include { SCAFFOLDS_EXTERNAL     } from './workflows/scaffolds'
 include { SCAFFOLDS_EXQC         } from './workflows/cdc_scaffolds'
@@ -59,6 +60,14 @@ workflow PHOENIX {
         amrfinder_report = PHOENIX_EXTERNAL.out.amrfinder_report
         gamma_ar         = PHOENIX_EXTERNAL.out.gamma_ar
         summary_report   = PHOENIX_EXTERNAL.out.summary_report
+}
+
+//
+// WORKFLOW: Run QC steps from main cdcgov/phoenix analysis pipeline
+//
+workflow PHOENIX_QC {
+    main:
+        PHOENIX_QC_EXTERNAL ()
 }
 
 //
